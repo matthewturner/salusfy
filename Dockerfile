@@ -1,9 +1,9 @@
 FROM python:3.9.10
 ENV PIP_DISABLE_ROOT_WARNING=1
 RUN python -m pip install --upgrade pip
-COPY requirements.txt requirements.txt
 COPY requirements.test.txt requirements.test.txt
-RUN cat requirements.test.txt >> requirements.txt
+RUN pip install -r requirements.test.txt
+COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 VOLUME /app
 WORKDIR /app
