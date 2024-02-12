@@ -23,7 +23,7 @@ from homeassistant.components.climate import PLATFORM_SCHEMA
 
 from homeassistant.helpers.reload import async_setup_reload_service
 
-__version__ = "0.0.3"
+__version__ = "0.3.0"
 
 _LOGGER = logging.getLogger(__name__)
 
