@@ -16,6 +16,7 @@ from homeassistant.const import (
 )
 
 CONF_SIMULATOR = 'simulator'
+CONF_ENABLE_TEMPERATURE_CLIENT = True
 
 from . import ( ThermostatEntity, Client, WebClient, MockWebClient, HaTemperatureClient, MockHaTemperatureClient )
 
@@ -57,20 +58,28 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
     password = config.get(CONF_PASSWORD)
     id = config.get(CONF_ID)
     simulator = config.get(CONF_SIMULATOR)
+    enable_temperature_client = config.get(CONF_ENABLE_TEMPERATURE_CLIENT)
     entity_id = config.get(CONF_ENTITY_ID)
     host = config.get(CONF_HOST)
     access_token = config.get(CONF_ACCESS_TOKEN)
 
     client = None
 
-    if (simulator):
-        _LOGGER.info('Registering Salus simulator...')
+    if simulator:
+        _LOGGER.info('Registering Salus Thermostat client simulator...')
         client = Client(MockWebClient(), MockHaTemperatureClient())
     else:
-        _LOGGER.info('Registering Salus Thermostat climate entity...')
+        _LOGGER.info('Registering Salus Thermostat client...')
+
         web_client = WebClient(username, password, id)
-        ha_client = HaTemperatureClient(host, entity_id, access_token)
-        client = Client(web_client, ha_client)
+        
+        if enable_temperature_client:
+            _LOGGER.info('Registering Salus Thermostat client with Temperature client...')
+            ha_client = HaTemperatureClient(host, entity_id, access_token)
+            client = Client(web_client, ha_client)
+        else:
+            _LOGGER.info('Registering Salus Thermostat client...')
+            client = web_client
     
     await async_add_entities(
         [ThermostatEntity(name, client)]
