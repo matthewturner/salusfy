@@ -16,9 +16,11 @@ from homeassistant.const import (
 )
 
 CONF_SIMULATOR = 'simulator'
-CONF_ENABLE_TEMPERATURE_CLIENT = True
+CONF_ENABLE_TEMPERATURE_CLIENT = 'enable_temperature_client'
 
-from . import ( ThermostatEntity, Client, WebClient, MockWebClient, HaTemperatureClient, MockHaTemperatureClient )
+from . import ( ThermostatEntity, Client, WebClient, HaTemperatureClient )
+
+from . import simulator
 
 from homeassistant.components.climate import PLATFORM_SCHEMA
 
@@ -53,34 +55,37 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
     """Set up the E-Thermostat platform."""
     await async_setup_reload_service(hass, DOMAIN, PLATFORMS)
 
+    client = create_client_from(config)
+    
     name = config.get(CONF_NAME)
+    await async_add_entities(
+        [ThermostatEntity(name, client)]
+    )
+
+
+def create_client_from(config):
     username = config.get(CONF_USERNAME)
     password = config.get(CONF_PASSWORD)
     id = config.get(CONF_ID)
-    simulator = config.get(CONF_SIMULATOR)
+    enable_simulator = config.get(CONF_SIMULATOR)
     enable_temperature_client = config.get(CONF_ENABLE_TEMPERATURE_CLIENT)
     entity_id = config.get(CONF_ENTITY_ID)
     host = config.get(CONF_HOST)
     access_token = config.get(CONF_ACCESS_TOKEN)
 
-    client = None
-
-    if simulator:
+    if enable_simulator:
         _LOGGER.info('Registering Salus Thermostat client simulator...')
-        client = Client(MockWebClient(), MockHaTemperatureClient())
-    else:
+
+        return Client(simulator.WebClient(), simulator.TemperatureClient())
+
+    web_client = WebClient(username, password, id)
+    
+    if not enable_temperature_client:
         _LOGGER.info('Registering Salus Thermostat client...')
 
-        web_client = WebClient(username, password, id)
-        
-        if enable_temperature_client:
-            _LOGGER.info('Registering Salus Thermostat client with Temperature client...')
-            ha_client = HaTemperatureClient(host, entity_id, access_token)
-            client = Client(web_client, ha_client)
-        else:
-            _LOGGER.info('Registering Salus Thermostat client...')
-            client = web_client
+        return web_client
     
-    await async_add_entities(
-        [ThermostatEntity(name, client)]
-    )
+    _LOGGER.info('Registering Salus Thermostat client with Temperature client...')
+
+    ha_client = HaTemperatureClient(host, entity_id, access_token)
+    return Client(web_client, ha_client)    
