@@ -3,7 +3,6 @@ class EntityRegistry:
         self._entities = []
     
     async def register(self, list):
-        print('xxxxxxxxxxxxxxx')
         self._entities.extend(list)
     
     @property
