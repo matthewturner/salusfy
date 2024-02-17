@@ -1,2 +1,1 @@
 requests
-homeassistant==2024.2.2
