@@ -7,8 +7,6 @@ from .web_client import (
     MIN_TEMP
 )
 
-from .state import State
-
 from homeassistant.components.climate.const import (
     HVACAction,
     HVACMode,
@@ -34,7 +32,6 @@ class ThermostatEntity(ClimateEntity):
         """Initialize the thermostat."""
         self._name = name
         self._client = client
-        self._state = State()
 
     
     @property
@@ -121,7 +118,7 @@ class ThermostatEntity(ClimateEntity):
         return ClimateEntityFeature.PRESET_MODE
         
         
-    async def set_temperature(self, **kwargs):
+    async def async_set_temperature(self, **kwargs):
         """Set new target temperature."""
         
         temperature = kwargs.get(ATTR_TEMPERATURE)
@@ -134,7 +131,7 @@ class ThermostatEntity(ClimateEntity):
         self._state.target_temperature = temperature
 
 
-    async def set_hvac_mode(self, hvac_mode):
+    async def async_set_hvac_mode(self, hvac_mode):
         """Set HVAC mode, via URL commands."""
         
         await self._client.set_hvac_mode(hvac_mode)
@@ -147,11 +144,11 @@ class ThermostatEntity(ClimateEntity):
             self._state.status = STATE_ON
             
     
-    async def turn_off(self) -> None:
+    async def async_turn_off(self) -> None:
         await self.set_hvac_mode(HVACAction.OFF)
 
 
-    async def turn_on(self) -> None:
+    async def async_turn_on(self) -> None:
         await self.set_hvac_mode(HVACAction.HEATING)
 
 
