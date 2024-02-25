@@ -1,6 +1,2 @@
-<<<<<<< HEAD
 requests
-=======
-requests
->>>>>>> 7596c11 (Switch to async)
 requests_async
