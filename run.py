@@ -9,6 +9,8 @@ from tests.test_climate import MockHass
 from tests.config_adapter import ConfigAdapter
 from tests.entity_registry import EntityRegistry
 
+from homeassistant.components.climate.const import HVACMode
+
 import config
 
 import logging
