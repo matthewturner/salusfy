@@ -23,7 +23,6 @@ try:
 except ImportError:
     from homeassistant.components.climate import ClimateDevice as ClimateEntity
 
-SUPPORT_FLAGS = ClimateEntityFeature.TARGET_TEMPERATURE
 
 class ThermostatEntity(ClimateEntity):
     """Representation of a Salus Thermostat device."""
@@ -37,7 +36,7 @@ class ThermostatEntity(ClimateEntity):
     @property
     def supported_features(self):
         """Return the list of supported features."""
-        return SUPPORT_FLAGS
+        return ClimateEntityFeature.TARGET_TEMPERATURE | ClimateEntityFeature.TURN_ON | ClimateEntityFeature.TURN_OFF
 
     @property
     def name(self):
