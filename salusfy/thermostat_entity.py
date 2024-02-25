@@ -117,7 +117,7 @@ class ThermostatEntity(ClimateEntity):
         return ClimateEntityFeature.PRESET_MODE
         
         
-    async def async_set_temperature(self, **kwargs):
+    async def async_set_temperature(self, **kwargs) -> None:
         """Set new target temperature."""
         
         temperature = kwargs.get(ATTR_TEMPERATURE)
@@ -130,7 +130,7 @@ class ThermostatEntity(ClimateEntity):
         self._state.target_temperature = temperature
 
 
-    async def async_set_hvac_mode(self, hvac_mode):
+    async def async_set_hvac_mode(self, hvac_mode) -> None:
         """Set HVAC mode, via URL commands."""
         
         await self._client.set_hvac_mode(hvac_mode)
@@ -144,11 +144,11 @@ class ThermostatEntity(ClimateEntity):
             
     
     async def async_turn_off(self) -> None:
-        await self.set_hvac_mode(HVACAction.OFF)
+        await self.async_set_hvac_mode(HVACMode.OFF)
 
 
     async def async_turn_on(self) -> None:
-        await self.set_hvac_mode(HVACAction.HEATING)
+        await self.async_set_hvac_mode(HVACMode.HEAT)
 
 
     async def async_update(self):
