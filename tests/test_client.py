@@ -29,7 +29,7 @@ def mock_ha_client():
 
 
 @pytest.mark.asyncio
-async def test_entity_returns_target_temp_from_web_client(mock_client, mock_ha_client):
+async def test_client_returns_target_temp_from_web_client(mock_client, mock_ha_client):
     target = Client(mock_client, mock_ha_client)
 
     actual = await target.get_state()
@@ -38,7 +38,7 @@ async def test_entity_returns_target_temp_from_web_client(mock_client, mock_ha_c
 
 
 @pytest.mark.asyncio
-async def test_entity_returns_target_temp_from_home_assistant_client(mock_client, mock_ha_client):
+async def test_client_returns_target_temp_from_home_assistant_client(mock_client, mock_ha_client):
     target = Client(mock_client, mock_ha_client)
 
     actual = await target.get_state()
@@ -47,7 +47,7 @@ async def test_entity_returns_target_temp_from_home_assistant_client(mock_client
 
 
 @pytest.mark.asyncio
-async def test_entity_call_salus_client_only_once(mock_client, mock_ha_client):
+async def test_client_call_salus_client_only_once(mock_client, mock_ha_client):
     target = Client(mock_client, mock_ha_client)
 
     await target.get_state()
@@ -60,8 +60,10 @@ async def test_entity_call_salus_client_only_once(mock_client, mock_ha_client):
 
 
 @pytest.mark.asyncio
-async def test_entity_delegates_set_temperature_salus_client(mock_client, mock_ha_client):
+async def test_client_delegates_set_temperature_salus_client(mock_client, mock_ha_client):
     target = Client(mock_client, mock_ha_client)
+
+    await target.get_state()
 
     await target.set_temperature(temperature=29.9)
 
@@ -69,8 +71,10 @@ async def test_entity_delegates_set_temperature_salus_client(mock_client, mock_h
 
 
 @pytest.mark.asyncio
-async def test_entity_delegates_set_hvac_mode_to_salus_client(mock_client, mock_ha_client):
+async def test_client_delegates_set_hvac_mode_to_salus_client(mock_client, mock_ha_client):
     target = Client(mock_client, mock_ha_client)
+
+    await target.get_state()
 
     await target.set_hvac_mode(hvac_mode=HVACMode.HEAT)
 
@@ -81,7 +85,78 @@ async def test_entity_delegates_set_hvac_mode_to_salus_client(mock_client, mock_
 async def test_client_assumes_hvac_action_as_idle_when_mode_is_off(mock_client, mock_ha_client):
     target = Client(mock_client, mock_ha_client)
 
+    await target.get_state()
+
     await target.set_hvac_mode(hvac_mode=HVACMode.OFF)
+
+    actual = await target.get_state()
+    
+    assert actual.action == HVACAction.IDLE
+
+
+@pytest.mark.asyncio
+async def test_client_sets_hvac_mode(mock_client, mock_ha_client):
+    target = Client(mock_client, mock_ha_client)
+
+    await target.get_state()
+
+    await target.set_hvac_mode(hvac_mode=HVACMode.OFF)
+
+    actual = await target.get_state()
+    
+    assert actual.mode == HVACMode.OFF
+
+
+@pytest.mark.asyncio
+async def test_client_assumes_hvac_action_as_heat_when_mode_is_heat_and_target_temp_is_high(mock_client, mock_ha_client):
+    target = Client(mock_client, mock_ha_client)
+
+    await target.get_state()
+
+    await target.set_temperature(temperature=30)
+    await target.set_hvac_mode(hvac_mode=HVACMode.HEAT)
+
+    actual = await target.get_state()
+    
+    assert actual.action == HVACAction.HEATING
+
+
+@pytest.mark.asyncio
+async def test_client_assumes_hvac_action_as_idle_when_mode_is_heat_and_target_temp_is_low(mock_client, mock_ha_client):
+    target = Client(mock_client, mock_ha_client)
+
+    await target.get_state()
+
+    await target.set_temperature(temperature=4)
+    await target.set_hvac_mode(hvac_mode=HVACMode.HEAT)
+
+    actual = await target.get_state()
+    
+    assert actual.action == HVACAction.IDLE
+
+
+@pytest.mark.asyncio
+async def test_client_assumes_hvac_action_as_heat_when_mode_is_heat_and_target_temp_is_set_high(mock_client, mock_ha_client):
+    target = Client(mock_client, mock_ha_client)
+
+    await target.get_state()
+
+    await target.set_hvac_mode(hvac_mode=HVACMode.HEAT)
+    await target.set_temperature(temperature=33)
+
+    actual = await target.get_state()
+    
+    assert actual.action == HVACAction.HEATING
+
+
+@pytest.mark.asyncio
+async def test_client_assumes_hvac_action_as_idle_when_mode_is_heat_and_target_temp_is_set_low(mock_client, mock_ha_client):
+    target = Client(mock_client, mock_ha_client)
+
+    await target.get_state()
+
+    await target.set_hvac_mode(hvac_mode=HVACMode.HEAT)
+    await target.set_temperature(temperature=4)
 
     actual = await target.get_state()
     
