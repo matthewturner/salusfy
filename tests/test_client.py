@@ -3,7 +3,8 @@ from unittest.mock import Mock
 
 from salusfy import ( Client, State, WebClient, HaTemperatureClient )
 from homeassistant.components.climate.const import (
-    HVACMode
+    HVACMode,
+    HVACAction
 )
 
 @pytest.fixture
@@ -74,3 +75,14 @@ async def test_entity_delegates_set_hvac_mode_to_salus_client(mock_client, mock_
     await target.set_hvac_mode(hvac_mode=HVACMode.HEAT)
 
     mock_client.set_hvac_mode.assert_called_once_with(HVACMode.HEAT)
+
+
+@pytest.mark.asyncio
+async def test_client_assumes_hvac_action_as_idle_when_mode_is_off(mock_client, mock_ha_client):
+    target = Client(mock_client, mock_ha_client)
+
+    await target.set_hvac_mode(hvac_mode=HVACMode.OFF)
+
+    actual = await target.get_state()
+    
+    assert actual.action == HVACAction.IDLE
