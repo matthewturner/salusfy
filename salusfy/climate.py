@@ -45,8 +45,8 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
         vol.Required(CONF_ID): cv.string,
         vol.Optional(CONF_SIMULATOR, default=False): cv.boolean,
         vol.Optional(CONF_ENABLE_TEMPERATURE_CLIENT, default=False): cv.boolean,
-        vol.Required(CONF_ENTITY_ID): cv.string,
-        vol.Required(CONF_ACCESS_TOKEN): cv.string,
+        vol.Optional(CONF_ENTITY_ID, default=''): cv.string,
+        vol.Optional(CONF_ACCESS_TOKEN, default=''): cv.string,
         vol.Optional(CONF_HOST, default='localhost'): cv.string
     }
 )
