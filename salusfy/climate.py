@@ -69,10 +69,6 @@ def create_client_from(config):
     password = config.get(CONF_PASSWORD)
     id = config.get(CONF_ID)
     enable_simulator = config.get(CONF_SIMULATOR)
-    enable_temperature_client = config.get(CONF_ENABLE_TEMPERATURE_CLIENT)
-    entity_id = config.get(CONF_ENTITY_ID)
-    host = config.get(CONF_HOST)
-    access_token = config.get(CONF_ACCESS_TOKEN)
 
     if enable_simulator:
         _LOGGER.info('Registering Salus Thermostat client simulator...')
@@ -81,11 +77,17 @@ def create_client_from(config):
 
     web_client = WebClient(username, password, id)
     
+    enable_temperature_client = config.get(CONF_ENABLE_TEMPERATURE_CLIENT)
+    
     if not enable_temperature_client:
         _LOGGER.info('Registering Salus Thermostat client...')
 
         return web_client
     
+    entity_id = config.get(CONF_ENTITY_ID)
+    host = config.get(CONF_HOST)
+    access_token = config.get(CONF_ACCESS_TOKEN)
+
     _LOGGER.info('Registering Salus Thermostat client with Temperature client...')
 
     ha_client = HaTemperatureClient(host, entity_id, access_token)
