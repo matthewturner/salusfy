@@ -7,6 +7,8 @@ from homeassistant.components.climate.const import (
 
 from salusfy import WebClient
 
+# pylint: disable=missing-function-docstring
+
 
 @pytest.fixture(name="payload")
 def payload_fixture() -> dict:

@@ -1,5 +1,6 @@
 class EntityRegistry:
     """Registry used for local and test executions."""
+
     def __init__(self):
         self._entities = []
         self._update_before_add = False
@@ -22,7 +23,7 @@ class EntityRegistry:
     @property
     def update_before_add(self):
         """
-        Determines whether the update_before_add value 
+        Determines whether the update_before_add value
         has been set during configuration.
         """
         return self._update_before_add

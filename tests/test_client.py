@@ -8,6 +8,8 @@ from homeassistant.components.climate.const import (
 
 from salusfy import (Client, State, WebClient, HaTemperatureClient)
 
+# pylint: disable=missing-function-docstring
+
 
 @pytest.fixture(name="mock_client")
 def mock_client_fixture():
@@ -158,7 +160,9 @@ async def test_client_assumes_hvac_action_as_heat_when_mode_is_heat_and_target_t
 
 
 @pytest.mark.asyncio
-async def test_client_assumes_hvac_action_as_idle_when_mode_is_heat_and_target_temp_is_set_low(mock_client, mock_ha_client):
+async def test_client_assumes_hvac_action_as_idle_when_mode_is_heat_and_target_temp_is_set_low(
+        mock_client, mock_ha_client):
+
     target = Client(mock_client, mock_ha_client)
 
     await target.get_state()
