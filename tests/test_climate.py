@@ -23,7 +23,10 @@ class MockHass:
 async def setup_climate_platform():
     registry = EntityRegistry()
     config_adapter = ConfigAdapter(mock_config)
-    await climate.async_setup_platform(MockHass(), config_adapter, async_add_entities=registry.register, discovery_info=None)
+    await climate.async_setup_platform(MockHass(),
+                                       config_adapter,
+                                       async_add_entities=registry.register,
+                                       discovery_info=None)
     return registry
 
 

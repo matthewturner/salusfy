@@ -5,8 +5,8 @@ import pytest
 from salusfy import (ThermostatEntity, State, WebClient)
 
 
-@pytest.fixture
-def mock_client():
+@pytest.fixture(name="mock_client")
+def mock_client_fixture():
     state = State()
     state.current_temperature = 15.3
     state.target_temperature = 33.3

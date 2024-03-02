@@ -37,3 +37,5 @@ class ConfigAdapter:
 
         if key == 'access_token':
             return self._config.ACCESS_TOKEN
+
+        return 'Unknown'
