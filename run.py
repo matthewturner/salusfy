@@ -12,10 +12,10 @@ import argparse
 
 from homeassistant.components.climate.const import HVACMode
 
-from salusfy import climate
-from tests.test_climate import MockHass
-from tests.config_adapter import ConfigAdapter
-from tests.entity_registry import EntityRegistry
+from custom_components.salusfy import climate
+from custom_components.tests.test_climate import MockHass
+from custom_components.tests.config_adapter import ConfigAdapter
+from custom_components.tests.entity_registry import EntityRegistry
 
 
 import config
