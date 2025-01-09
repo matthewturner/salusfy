@@ -10,15 +10,13 @@ My device is RT301i, it is working with it500 thermostat, the idea is simple if 
 ## Component to interface with the salus-it500.com.
 It reads the Current Temperature, Set Temperature, Current HVAC Mode, Current Relay Mode.
 
-Keep in mind this is my first custom component and this is also the first version of this Salusfy so it can have bugs. Sorry for that.
-
 **** This is not an official integration.
 
 ### Installation
-1. Clone the repo into the `home_assistant` directory
-1. Change directory into the `salusfy` directory
-1. Run install.sh (you may need to fix the line endings)
-1. Configure with config below
+1. Add the repository in HACS:
+    1. Repository: matthewturner/salusfy
+    1. Type: Integration
+1. Configure with config below through a text editor
 1. Restart Home Assistant
 
 ### Usage
@@ -26,19 +24,26 @@ To use this component in your installation, add the following to your configurat
 
 #### Example configuration.yaml entry
 
-```
+```yaml
 climate:
   - platform: salusfy
     username: "EMAIL"
     password: "PASSWORD"
     id: "DEVICE_ID"
 ```
+
+Or add to a `climate.yaml` file and reference that file in configuration.yaml:
+
+```yaml
+climate: !include climate.yaml
+```
+
 ![image](https://user-images.githubusercontent.com/33951255/140300295-4915a18f-f5d4-4957-b513-59d7736cc52a.png)
 ![image](https://user-images.githubusercontent.com/33951255/140303472-fd38b9e4-5c33-408f-afef-25547c39551c.png)
 
 
 ### Getting the DEVICE_ID
-1. Loggin to https://salus-it500.com with email and password used in the mobile app (in my case RT301i)
+1. Login to `https://salus-it500.com` with email and password used in the mobile app (in my case RT301i)
 2. Click on the device
 3. In the next page you will be able to see the device ID in the page URL
 4. Copy the device ID from the URL
@@ -55,7 +60,7 @@ The effect of this is that the target temperature/mode values may be out of date
 
 To enable the `TemperatureClient`, set the following settings in `climate.yaml`:
 
-```
+```yaml
 climate:
   - platform: salusfy
     username: "EMAIL"
