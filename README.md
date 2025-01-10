@@ -1,6 +1,6 @@
 # Home-Assistant Custom Components
 
-[![CI](https://github.com/matthewturner/salusfy/actions/workflows/ci.yml/badge.svg)](https://github.com/matthewturner/salusfy/actions/workflows/ci.yml)
+[![CI](https://github.com/matthewturner/salusfy/actions/workflows/ci.yml/badge.svg)](https://github.com/matthewturner/salusfy/actions/workflows/ci.yml) [![CodeQL](https://github.com/matthewturner/salusfy/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/matthewturner/salusfy/actions/workflows/github-code-scanning/codeql)
 
 Custom Components for Home-Assistant (http://www.home-assistant.io)
 
