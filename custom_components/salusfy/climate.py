@@ -66,7 +66,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
             default='localhost'): cv.string,
         vol.Optional(
             CONF_PORT,
-            default='8123'): cv.string})
+            default='80'): cv.string})
 
 
 async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
