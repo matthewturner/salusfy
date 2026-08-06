@@ -34,6 +34,9 @@ class ConfigAdapter:
 
         if key == 'host':
             return self._config.HOST
+        
+        if key == 'port':
+            return self._config.PORT
 
         if key == 'entity_id':
             return self._config.ENTITY_ID

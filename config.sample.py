@@ -10,5 +10,6 @@ DEVICE_ID = "replace"
 SIMULATOR = False
 ENABLE_TEMPERATURE_CLIENT = False
 HOST = "your-home-assistant-ip-address"
+PORT = "8123"
 ENTITY_ID = "sensor.your-temperature-sensor"
 ACCESS_TOKEN = "your-HA-access-token"

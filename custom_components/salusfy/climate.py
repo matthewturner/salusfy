@@ -14,7 +14,8 @@ from homeassistant.const import (
     CONF_ID,
     CONF_ENTITY_ID,
     CONF_ACCESS_TOKEN,
-    CONF_HOST
+    CONF_HOST,
+    CONF_PORT
 )
 
 from . import simulator
@@ -29,7 +30,7 @@ CONF_SIMULATOR = 'simulator'
 CONF_ENABLE_TEMPERATURE_CLIENT = 'enable_temperature_client'
 
 
-__version__ = "0.3.0"
+__version__ = "1.0.0"
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -62,7 +63,10 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
             default=''): cv.string,
         vol.Optional(
             CONF_HOST,
-            default='localhost'): cv.string})
+            default='localhost'): cv.string,
+        vol.Optional(
+            CONF_PORT,
+            default='8123'): cv.string})
 
 
 async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
@@ -104,10 +108,11 @@ def create_client_from(config) -> Client:
 
     entity_id = config.get(CONF_ENTITY_ID)
     host = config.get(CONF_HOST)
+    port = config.get(CONF_PORT)
     access_token = config.get(CONF_ACCESS_TOKEN)
 
     _LOGGER.info(
         'Registering Salus Thermostat client with Temperature client...')
 
-    ha_client = HaTemperatureClient(host, entity_id, access_token)
+    ha_client = HaTemperatureClient(host, port, entity_id, access_token)
     return Client(web_client, ha_client)

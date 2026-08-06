@@ -68,6 +68,7 @@ climate:
     id: "DEVICE_ID"
     enable_temperature_client: True
     host: "your-home-assistant-ip-address"
+    port: "8123"
     entity_id: "sensor.your-temperature-sensor"
     access_token: "your-HA-access-token"
 ```
@@ -89,6 +90,7 @@ Feel free to change the code to exercise different methods and configuration.
 ```
 ENABLE_TEMPERATURE_CLIENT = True
 HOST = "your-home-assistant-ip-address"
+PORT = "8123"
 ENTITY_ID = "sensor.your-temperature-sensor"
 ACCESS_TOKEN = "your-HA-access-token"
 ```
