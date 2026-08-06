@@ -10,15 +10,16 @@ class HaTemperatureClient:
     another entity from the Home Assistant API
     """
 
-    def __init__(self, host, entity_id, access_token):
+    def __init__(self, host, port, entity_id, access_token):
         self._entity_id = entity_id
         self._host = host
+        self._port = port
         self._access_token = access_token
 
     async def current_temperature(self) -> float:
         """Gets the current temperature from HA"""
 
-        url = F"http://{self._host}:8123/api/states/{self._entity_id}"
+        url = F"http://{self._host}:{self._port}/api/states/{self._entity_id}"
 
         headers = {
             "Authorization": F"Bearer {self._access_token}",
